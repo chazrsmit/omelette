@@ -18,3 +18,10 @@ export class Outils {
         this.nom = nom;
     }
 }
+
+export class Panier {
+    constructor(type, contenu) {
+        this.type = type;
+        this.contenu = contenu;
+    }
+}

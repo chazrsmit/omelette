@@ -1,6 +1,7 @@
 import { Lieu } from './classes.js'
 import { Ingredients } from './classes.js'
 import { Outils } from './classes.js'
+import { Panier } from './classes.js'
 
 //// Création de la sous-classe Epicerie ////
 
@@ -21,26 +22,28 @@ let sel = new Ingredients("sel", ["entier"], 1.75)
 let fromage = new Ingredients("fromage", ["rapé"], 3.5)
 let ail = new Ingredients("ail", ["entier"], 0.5)
 
-//// Objet "panier" ////
+//// Objets "panier" ////
 
-let panier = {
-    type : "panier",
-    contenu : [],
-}
+let panier1 = new Panier("panier 1", [])
+let panier2 = new Panier("panier 2", [])
+let panier3 = new Panier("panier 3", [])
+let panier4 = new Panier("panier 4", [])
+let panier5 = new Panier("panier 5", [])
+
 
 //// Lieu - objet "maison" ////
 
 let maison = new Lieu("maison", [])
 
 //// Lieu - objet "épicerie" ////
-let epicerie = new Commerce("épicerie", [], [panier], [oignon, oeufs, poivre, sel, fromage, ail])
+let epicerie = new Commerce("épicerie", [], [panier1, panier2, panier3, panier4, panier5], [oignon, oeufs, poivre, sel, fromage, ail])
 
 
 //// Personnage ////
 let personnage = {
     nom : "charles",
     lieuActuel : null,
-    argent : null,
+    argent : 30,
     mainDroite : [],
     mainGauche : [],
     seDeplacer(lieu) {
@@ -59,7 +62,9 @@ let personnage = {
             console.log(`${personnage.nom} se trouve maintenant à ${personnage.lieuActuel.nom}`)
         }
     },
-    payerArticle(article) {},
+    payerArticle(article) {
+        personnage.argent = personnage.argent - article.prix
+    },
     couper(ingredients, outils) {} 
 }
 
@@ -103,5 +108,28 @@ let bol = {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+//// départ maison
 personnage.seDeplacer(maison)
+
+//// déplacement épicerie
+personnage.seDeplacer(epicerie)
+// met un panier randomly dans sa main droite
+let r = Math.floor(Math.random() * epicerie.paniers.length)
+personnage.mainDroite.push(epicerie.paniers[r])
+epicerie.paniers.splice(r, 1)
+// console.log(`${personnage.nom} a pris le ${epicerie.paniers[r].type}`)
+console.log(`${personnage.nom} a pris un panier`)
+
+//// copier chaque ingrédients de l'épicerie dans le contenu du panier tenu dans la main droite
+
+// console.log(personnage.mainDroite[0].contenu)
+// console.log(epicerie.ingredients.length)
+
+for (let j=0 ; j < epicerie.ingredients.length ; j++) {
+    personnage.mainDroite[0].contenu.push(epicerie.ingredients[j])
+    personnage.payerArticle(epicerie.ingredients[j])
+    console.log(`${personnage.nom} a pris le produit '${epicerie.ingredients[j].nom}'`)
+}
+console.log(`Il lui reste ${personnage.argent} euros.`)
+
+
