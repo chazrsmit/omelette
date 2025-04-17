@@ -53,13 +53,14 @@ let personnage = {
             previous.personnes = []
             this.lieuActuel = lieu
             lieu.personnes.push(personnage)
-            console.log(`${personnage.nom} est actuellement à ${personnage.lieuActuel.nom}.`)
+            console.log("🛣️⠂⠄⠄⠂⠁⠁⠂⠄⠄🚗")
+            console.log(`📍 ${personnage.nom} est maintenant à ${personnage.lieuActuel.nom}.`)
         }
         // pour le départ : si le personnage ne se trouve nulle part, on lui ajoue un lieu et dans le lieu, le personnage est ajouté
         else if (this.lieuActuel == null) {
             this.lieuActuel = lieu
             lieu.personnes.push(personnage)
-            console.log(`${personnage.nom} se trouve maintenant à ${personnage.lieuActuel.nom}.`)
+            console.log(`📍 ${personnage.nom} se trouve actuellement à ${personnage.lieuActuel.nom}.`)
         }
     },
     payerArticle(article) {
@@ -92,7 +93,9 @@ class Cuisson extends Outils {
     cuire() {
         setTimeout(() => {
             this.contenu[0].etats = ["cuit"]
-            console.log(`Notre ${this.contenu[0].nom} est cuit-e !`)
+            console.log(`Notre ${this.contenu[0].nom} est cuite !`)
+            console.log(poele.contenu[0])
+            console.log(`🍽️ ${personnage.nom} peut enfin manger !`)
           }, 4000);
         }
     // l'élément dans la poele (le mélange) passe de l'état "cru" à "cuit"
@@ -114,9 +117,14 @@ let bol = {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //// START départ maison ////
+
+console.log("START")
+console.log("────────────────────────")
 personnage.seDeplacer(maison)
+console.log(`🤤 ${personnage.nom} a faim. Il va faire des courses pour se faire à manger.`)
 
 //// déplacement épicerie ////
+console.log("────────────────────────")
 personnage.seDeplacer(epicerie)
 
 // si le perso a quelque chose dans sa main droite et rien dans sa main gauche :
@@ -139,7 +147,7 @@ else if (personnage.mainDroite.length == 0 && personnage.mainGauche.length == 0)
     personnage.mainDroite.push(epicerie.paniers[r])
     var panierPris = epicerie.paniers[r]
     epicerie.paniers.splice(r, 1)
-    console.log(`${personnage.nom} a pris le ${panierPris.type}.`)
+    console.log(`🧺 ${personnage.nom} prend le ${panierPris.type}.`)
     // console.log(`${personnage.nom} a pris un panier`)
 }
 
@@ -154,12 +162,27 @@ let total = 0
 for (let j=0 ; j < epicerie.ingredients.length ; j++) {
     personnage.mainDroite[0].contenu.push(epicerie.ingredients[j])
     personnage.payerArticle(epicerie.ingredients[j])
-    console.log(`${personnage.nom} a pris le produit '${epicerie.ingredients[j].nom}'`)
     total = total + epicerie.ingredients[j].prix
+    // console.log(`🐧 ${personnage.nom} a pris le produit '${epicerie.ingredients[j].nom}'`)
+    if (epicerie.ingredients[j].nom == 'ail') {
+        console.log(`🧄 ${personnage.nom} met le produit '${epicerie.ingredients[j].nom}' dans son panier.`)
+    }
+    else if (epicerie.ingredients[j].nom == 'oignon') {
+        console.log(`🧅 ${personnage.nom} met le produit '${epicerie.ingredients[j].nom}' dans son panier.`)
+    }
+    else if (epicerie.ingredients[j].nom == 'fromage') {
+        console.log(`🧀 ${personnage.nom} met le produit '${epicerie.ingredients[j].nom}' dans son panier.`)
+    }
+    else if (epicerie.ingredients[j].nom == 'oeufs') {
+        console.log(`🥚 ${personnage.nom} met le produit '${epicerie.ingredients[j].nom}' dans son panier.`)
+    }
+    else if (epicerie.ingredients[j].nom == 'sel' || epicerie.ingredients[j].nom == 'poivre') {
+        console.log(`🧂 ${personnage.nom} met le produit '${epicerie.ingredients[j].nom}' dans son panier.`)
+    }
 }
-
-console.log("/////////////////")
-console.log("Ticket de caisse :")
+console.log(" ")
+console.log("══════════════════════")
+console.log("| Ticket de caisse :")
 
 for (let j=0 ; j < epicerie.ingredients.length ; j++) {
     console.log(`| ${epicerie.ingredients[j].nom} ...... ${epicerie.ingredients[j].prix} \u20AC`)
@@ -167,31 +190,37 @@ for (let j=0 ; j < epicerie.ingredients.length ; j++) {
 
 console.log("_________________")
 console.log(`| TOTAL : ${total} \u20AC`)
-console.log("/////////////////")
-console.log(`Il paie. Il lui reste ${personnage.argent} \u20AC.`)
+console.log("𝄃𝄃𝄂𝄂𝄀𝄁𝄃𝄂𝄂𝄃𝄃𝄃𝄂𝄂𝄀𝄁𝄃𝄂𝄂𝄃")
+console.log("══════════════════════")
+console.log(" ")
+console.log(`💰 Il paie. Il lui reste ${personnage.argent} \u20AC.`)
+console.log("────────────────────────")
 
 //// retourner à la maison ////
 
 personnage.seDeplacer(maison)
 
-//// mettre chaque ingrédient contenu dans le panier tenu dans la main droite du personnage dans l'objet bol ////
+//// mettre chaque ingrédient contenu dans le panier tenu dans la main droite du personnage > l'objet bol ////
 
+console.log("🧑‍🍳 Il est prêt à commencer à cuisiner.")
 for (let k = 0 ; k < personnage.mainDroite[0].contenu.length ; k ++) {
     bol.contenu.push(personnage.mainDroite[0].contenu[k])
-    console.log(`${personnage.mainDroite[0].contenu[k].nom} a été mis dans le bol`)
-    // à chaque ingrédient mis dans le bol, on le retire du contenu du paner tenu dans la main droite
+    console.log(`🍲 '${personnage.mainDroite[0].contenu[k].nom}' a été mis dans le bol`)
+    // à chaque ingrédient mis dans le bol, on le retire du contenu du panier tenu dans la main droite
     var newArray = personnage.mainDroite[0].contenu.slice(k+1)
+    // on met un +1 car sinon à la fin il va rester le dernier élément dans le panier (il ne sera pas sliced)
     // on a créé une nouvelle array car sinon les changements ne sont pas stockés (l'array originale n'est pas modifiée)
 }
 
 personnage.mainDroite[0].contenu = newArray
-console.log(personnage.mainDroite[0])
-console.log("Le panier est désormais vide.")
+console.log("🧺 Le contenu du panier est désormais vide :")
+console.log(newArray)
 // on réatribue la variable > le panier tenu dans la main droite est maintenant vide
-
+console.log("────────────────────────")
 
 //// retourner à l'épicerie pour rendre le panier vide ////
 
+console.log(`🤞 ${personnage.nom} est honnête et veut rendre le beau panier de l'épicerie. Il prend sa voiture pour y retourner.`)
 personnage.seDeplacer(epicerie)
 
 for (let i = 0 ; i < personnage.mainDroite.length ; i++) {
@@ -217,41 +246,59 @@ for (let i = 0 ; i < personnage.mainDroite.length ; i++) {
 }
 personnage.mainDroite = main
 // on réattribue la variable
-console.log(`La main droite de ${personnage.nom} est vide :`)
+console.log(`✋ La main droite de ${personnage.nom} est maintenant vide :`)
 console.log(personnage.mainDroite)
-console.log(`${personnage.nom} a déposé le ${panierARendre.type} à l'épicerie.`)
+console.log(`🙋 ${personnage.nom} a redéposé le ${panierARendre.type} à l'épicerie.`)
 
 //// on retourne à la maison pour continuer l'omelette ////
-
+console.log("────────────────────────")
+console.log("💪 Maintenant les choses sérieuses peuvent commencer.")
 personnage.seDeplacer(maison)
 
 for (let i = 0 ; i < bol.contenu.length ; i++) {
     if (bol.contenu[i].etats == "entier") {
         personnage.couper(bol.contenu[i])
-        console.log(`${bol.contenu[i].nom} a été ${bol.contenu[i].etats}`)
+        if (epicerie.ingredients[i].nom == 'ail') {
+            console.log(`🧄 '${bol.contenu[i].nom}' a été ${bol.contenu[i].etats}`)
+        }
+        else if (epicerie.ingredients[i].nom == 'oignon') {
+            console.log(`🧅 '${bol.contenu[i].nom}' a été ${bol.contenu[i].etats}`)
+        }
+        else if (epicerie.ingredients[i].nom == 'fromage') {
+            console.log(`🧀 '${bol.contenu[i].nom}' a été ${bol.contenu[i].etats}`)
+        }
+        else if (epicerie.ingredients[i].nom == 'oeufs') {
+            console.log(`🥚 '${bol.contenu[i].nom}' a été ${bol.contenu[i].etats}`)
+        }
+        else if (epicerie.ingredients[i].nom == 'sel' || epicerie.ingredients[i].nom == 'poivre') {
+            console.log(`🧂 '${bol.contenu[i].nom}' a été ${bol.contenu[i].etats}`)
+        }
     }
 }
 
 //// On cuisine ////
 
+console.log("────────────────────────")
 
+console.log(`🥄 ${personnage.nom} commence à mélanger les ingrédients dans le bol.`)
 // on crée la nouvelle instance de la classe ingrédients, qui est "omelette"
 let omelette = new Ingredients("omelette", ["cru"], 0)
 
 // on mélange
 bol.melanger(omelette)
-console.log(`Le bol contient l'${bol.contenu[0].nom} dans un état ${bol.contenu[0].etats}.`)
+console.log(`🥘 Le bol contient désormais l'${bol.contenu[0].nom} dans un état ${bol.contenu[0].etats}.`)
 
 // maintenant on vide le bol dans la poêle
 
 poele.contenu.push(bol.contenu[0])
-console.log("On vide le contenu du bol dans la pôele :")
-console.log(poele.contenu)
+console.log("🍳 On vide le contenu du bol dans la pôele :")
+
 // on vide le bol
 bol.contenu.splice(bol.contenu.indexOf(bol.contenu[0]),1)
-console.log("Le bol est désormais vide :")
+console.log("🥣 Le bol est désormais vide :")
 console.log(bol.contenu)
 
 // on cuit
+console.log("────────────────────────")
+console.log("⏱️⏱️⏱️⏱️⏱️")
 poele.cuire()
-
