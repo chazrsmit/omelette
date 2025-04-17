@@ -60,7 +60,7 @@ let personnage = {
         }
     },
     payerArticle(article) {},
-    couper(ingredients, outils) {}
+    couper(ingredients, outils) {} 
 }
 
 
