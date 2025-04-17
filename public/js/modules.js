@@ -41,7 +41,7 @@ let epicerie = new Commerce("épicerie", [], [panier1, panier2, panier3, panier4
 
 //// Personnage ////
 let personnage = {
-    nom : "charles",
+    nom : "Charles",
     lieuActuel : null,
     argent : 30,
     mainDroite : [],
@@ -108,10 +108,10 @@ let bol = {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//// départ maison
+//// départ maison ////
 personnage.seDeplacer(maison)
 
-//// déplacement épicerie
+//// déplacement épicerie ////
 personnage.seDeplacer(epicerie)
 // met un panier randomly dans sa main droite
 let r = Math.floor(Math.random() * epicerie.paniers.length)
@@ -120,16 +120,36 @@ epicerie.paniers.splice(r, 1)
 // console.log(`${personnage.nom} a pris le ${epicerie.paniers[r].type}`)
 console.log(`${personnage.nom} a pris un panier`)
 
-//// copier chaque ingrédients de l'épicerie dans le contenu du panier tenu dans la main droite
+//// copier chaque ingrédients de l'épicerie dans le contenu du panier tenu dans la main droite ////
 
 // console.log(personnage.mainDroite[0].contenu)
 // console.log(epicerie.ingredients.length)
+
+let total = 0
 
 for (let j=0 ; j < epicerie.ingredients.length ; j++) {
     personnage.mainDroite[0].contenu.push(epicerie.ingredients[j])
     personnage.payerArticle(epicerie.ingredients[j])
     console.log(`${personnage.nom} a pris le produit '${epicerie.ingredients[j].nom}'`)
+    total = total + epicerie.ingredients[j].prix
 }
-console.log(`Il lui reste ${personnage.argent} euros.`)
 
+console.log("/////////////////")
+console.log("Ticket de caisse :")
+
+for (let j=0 ; j < epicerie.ingredients.length ; j++) {
+    console.log(`| ${epicerie.ingredients[j].nom} ...... ${epicerie.ingredients[j].prix} \u20AC`)
+}
+
+console.log("_________________")
+console.log(`| TOTAL : ${total} \u20AC`)
+console.log("/////////////////")
+console.log(`Il paie. Il lui reste ${personnage.argent} \u20AC.`)
+
+//// retourner à la maison ////
+
+personnage.seDeplacer(maison)
+console.log(`${personnage.nom} est rentré à ${personnage.lieuActuel.nom}`)
+
+//// mettre chaque ingrédient contenu dans le panier tenu dans la main droite du personnage dans l'objet bol ////
 
